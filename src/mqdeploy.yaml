@@ -254,7 +254,7 @@ spec:
                 - "mqtest-ibm-mq"
             topologyKey: "kubernetes.io/hostname"
       imagePullSecrets:
-        - name: private-registry-secret
+        - name: ibm-cr-secret
       serviceAccountName: default
       hostNetwork: false
       hostPID: false
