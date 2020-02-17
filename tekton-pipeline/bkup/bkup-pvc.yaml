@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ibm-mq-bkup
+  namespace: demo
+  labels:
+    app: "ibm-mq"
+    chart: "ibm-mqadvanced-server-dev"
+    heritage: "Tiller"
+    release: "mqtest"    
+spec:
+  storageClassName: "ibmc-file-bronze"
+  accessModes:
+    - "ReadWriteMany"
+  resources:
+    requests:
+      storage: "2Gi"
+
+

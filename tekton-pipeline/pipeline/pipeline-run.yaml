@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: mq-pipeline-run
+spec:
+  pipelineRef:
+    name: mq-pipeline
+  resources:
+    - name: git-source
+      resourceRef:
+        name: git-mq
+  params:
+    - name: pathToDockerfile
+      description: The path to the dockerfile to build
+      default: Dockerfile
+    - name: pathToYamlFile
+      value: "mqdeploy.yaml"
+    - name: imageUrl
+      value: de.icr.io/vcailly/builtmq
+    - name: imageTag
+      value: "9.1.3"
+  serviceAccount: service-account

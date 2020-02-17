@@ -1,0 +1,59 @@
+* © Copyright IBM Corporation 2018
+*
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+
+STOP LISTENER('SYSTEM.DEFAULT.LISTENER.TCP') IGNSTATE(YES)
+DELETE QLOCAL('DEV.QUEUE.1') 
+DELETE QLOCAL('DEV.QUEUE.2')
+DELETE QLOCAL('DEV.QUEUE.3')
+DELETE QLOCAL('DEV.QUEUE.4')
+DELETE QLOCAL('DEV.DEAD.LETTER.QUEUE')
+DELETE TOPIC('DEV.BASE.TOPIC')
+DELETE AUTHINFO('DEV.AUTHINFO')
+DELETE CHANNEL('DEV.ADMIN.SVRCONN')
+DELETE CHANNEL('DEV.APP.SVRCONN')
+STOP LISTENER('DEV.LISTENER.TCP') IGNSTATE(YES)
+DELETE LISTENER('DEV.LISTENER.TCP')
+
+* Developer queues
+DEFINE QLOCAL('BSM.QUEUE.1') REPLACE
+DEFINE QLOCAL('BSM.QUEUE.2') REPLACE
+DEFINE QLOCAL('BSM.QUEUE.3') REPLACE
+DEFINE QLOCAL('BSM.QUEUE.4') REPLACE
+DEFINE QLOCAL('BSM.DEAD.LETTER.QUEUE') REPLACE
+
+* Use a different dead letter queue, for undeliverable messages
+ALTER QMGR DEADQ('BSM.DEAD.LETTER.QUEUE')
+
+* Developer topics
+DEFINE TOPIC('BSM.BASE.TOPIC') TOPICSTR('dev/') REPLACE
+
+* Developer connection authentication
+DEFINE AUTHINFO('BSM.AUTHINFO') AUTHTYPE(IDPWOS) CHCKCLNT(REQDADM) CHCKLOCL(OPTIONAL) ADOPTCTX(YES) REPLACE
+ALTER QMGR CONNAUTH('BSM.AUTHINFO')
+REFRESH SECURITY(*) TYPE(CONNAUTH)
+
+* Developer channels (Application + Admin)
+DEFINE CHANNEL('BSM.ADMIN.SVRCONN') CHLTYPE(SVRCONN) REPLACE
+DEFINE CHANNEL('BSM.APP.SVRCONN') CHLTYPE(SVRCONN) MCAUSER('app') REPLACE
+
+* Developer channel authentication rules
+SET CHLAUTH('*') TYPE(ADDRESSMAP) ADDRESS('*') USERSRC(NOACCESS) DESCR('Back-stop rule - Blocks everyone') ACTION(REPLACE)
+SET CHLAUTH('BSM.APP.SVRCONN') TYPE(ADDRESSMAP) ADDRESS('*') USERSRC(CHANNEL) CHCKCLNT(REQUIRED) DESCR('Allows connection via APP channel') ACTION(REPLACE)
+SET CHLAUTH('BSM.ADMIN.SVRCONN') TYPE(BLOCKUSER) USERLIST('nobody') DESCR('Allows admins on ADMIN channel') ACTION(REPLACE)
+SET CHLAUTH('BSM.ADMIN.SVRCONN') TYPE(USERMAP) CLNTUSER('admin') USERSRC(CHANNEL) DESCR('Allows admin user to connect via ADMIN channel') ACTION(REPLACE)
+
+* Developer listener
+DEFINE LISTENER('BSM.LISTENER.TCP') TRPTYPE(TCP) PORT(1414) CONTROL(QMGR) REPLACE
+START LISTENER('BSM.LISTENER.TCP') IGNSTATE(YES)

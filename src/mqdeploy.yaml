@@ -1,0 +1,453 @@
+---
+# Source: ibm-mqadvanced-server-dev/templates/pvc-log.yaml
+# © Copyright IBM Corporation 2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Using "sch.names.volumeClaimTemplateName" to maintain consistency with previous chart versions for upgrade purposes
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mqtest-ibm-mq-log
+  namespace: demo
+  labels:
+    app: "ibm-mq"
+    chart: "ibm-mqadvanced-server-dev"
+    heritage: "Tiller"
+    release: "mqtest"    
+spec:
+  # If present, use the storageClassName from the values.yaml, else use the
+  # default storageClass setup by Kubernetes Administrator
+  #
+  # Setting storageClassName to nil means use the default storage class
+  storageClassName: "ibmc-file-bronze"
+  accessModes:
+    - "ReadWriteMany"
+  resources:
+    requests:
+      storage: "2Gi"
+
+---
+# Source: ibm-mqadvanced-server-dev/templates/pvc-qm.yaml
+# © Copyright IBM Corporation 2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Using "sch.names.volumeClaimTemplateName" to maintain consistency with previous chart versions for upgrade purposes
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mqtest-ibm-mq-qm
+  namespace: demo
+  labels:
+    app: "ibm-mq"
+    chart: "ibm-mqadvanced-server-dev"
+    heritage: "Tiller"
+    release: "mqtest"    
+spec:
+  # If present, use the storageClassName from the values.yaml, else use the
+  # default storageClass setup by Kubernetes Administrator
+  #
+  # Setting storageClassName to nil means use the default storage class
+  storageClassName: "ibmc-file-bronze"
+  accessModes:
+    - "ReadWriteMany"
+  resources:
+    requests:
+      storage: "2Gi"
+
+---
+# Source: ibm-mqadvanced-server-dev/templates/metrics-service.yaml
+# © Copyright IBM Corporation 2018, 2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# This is a separate service, because Prometheus will try and gather metrics
+# from the MQ port (1414) if it's included in the same service.
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: demo
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9157'
+  name: mqtest-ibm-mq-metrics
+  labels:
+    app: "ibm-mq"h
+    chart: "ibm-mqadvanced-server-dev"
+    heritage: "Tiller"
+    release: "mqtest"    
+spec:
+  type: ClusterIP
+  ports:
+  - targetPort: 9157
+    port: 9157
+    name: tcp-mqmetrics
+    protocol: TCP
+  selector:
+    app: "ibm-mq"
+    release: "mqtest"
+
+---
+# Source: ibm-mqadvanced-server-dev/templates/service.yaml
+# © Copyright IBM Corporation 2017, 2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: demo
+  name: mqtest-ibm-mq
+  labels:
+    app: "ibm-mq"
+    chart: "ibm-mqadvanced-server-dev"
+    heritage: "Tiller"
+    release: "mqtest"    
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 9443
+    name: https-console
+  - port: 1414
+    name: tcp-qmgr
+  selector:
+    app: "ibm-mq"
+    release: "mqtest" 
+
+---
+# Source: ibm-mqadvanced-server-dev/templates/stateful-set.yaml
+# © Copyright IBM Corporation 2017, 2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+
+
+
+
+
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mqtest-ibm-mq
+  namespace: demo
+  labels:
+    app: "ibm-mq"
+    chart: "ibm-mqadvanced-server-dev"
+    heritage: "Tiller"
+    release: "mqtest"    
+spec:
+  selector:
+    matchLabels:
+      app: "ibm-mq"
+      chart: "ibm-mqadvanced-server-dev"
+      heritage: "Tiller"
+      release: "mqtest"
+  serviceName: qm
+  replicas: 2
+  template:
+    metadata:
+      annotations:        
+        productChargedContainers: ""
+        productID: "2f886a3eefbe4ccb89b2adb97c78b9cb"
+        productMetric: "FREE_USAGE"
+        productName: "IBM MQ Advanced for Developers"
+        productVersion: "9.1.3.0"
+        sidecar.istio.io/inject: "false"
+      labels:
+        statefulSetName: "mqtest-ibm-mq"
+        app: "ibm-mq"
+        chart: "ibm-mqadvanced-server-dev"
+        heritage: "Tiller"
+        release: "mqtest"        
+    spec:
+      affinity:        
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - ppc64le
+                - s390x
+            
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 2
+            preference:
+              matchExpressions:
+              - key: "beta.kubernetes.io/arch"
+                operator: "In"
+                values:
+                - amd64
+          - weight: 2
+            preference:
+              matchExpressions:
+              - key: "beta.kubernetes.io/arch"
+                operator: "In"
+                values:
+                - ppc64le
+          - weight: 2
+            preference:
+              matchExpressions:
+              - key: "beta.kubernetes.io/arch"
+                operator: "In"
+                values:
+                - s390x
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: statefulSetName
+                operator: In
+                values:
+                - "mqtest-ibm-mq"
+            topologyKey: "kubernetes.io/hostname"
+      imagePullSecrets:
+        - name: ibm-cr-secret
+      serviceAccountName: default
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      securityContext:
+        fsGroup: 888
+        supplementalGroups:
+      volumes:
+      - name: mqtest-ibm-mq-log
+        persistentVolumeClaim:
+          claimName: mqtest-ibm-mq-log
+      - name: mqtest-ibm-mq-qm
+        persistentVolumeClaim:
+          claimName: mqtest-ibm-mq-qm
+      containers:
+        - name: qmgr
+          image: IMAGE
+          imagePullPolicy: Always
+          terminationMessagePath: "/run/termination-log"
+          ports:
+          - containerPort: 1414
+          - containerPort: 9443
+          - containerPort: 9157
+          env:
+          - name: LICENSE
+            value: accept
+          - name: MQ_QMGR_NAME
+            value: BSM
+          - name: MQ_MULTI_INSTANCE
+            value: "true"
+          - name: LOG_FORMAT
+            value: basic
+          - name: MQ_ENABLE_METRICS
+            value: "true"
+          - name: DEBUG
+            value: "false"
+          - name: MQ_EPHEMERAL_PREFIX
+            value: "/run/mqm"
+          - name: MQ_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mqsecret
+                key: adminPassword
+          volumeMounts:
+          - mountPath: "/mnt/mqm"
+            name: data
+          - mountPath: "/mnt/mqm-log"
+            name: mqtest-ibm-mq-log
+          - mountPath: "/mnt/mqm-data"
+            name: mqtest-ibm-mq-qm
+          securityContext:
+            seLinuxOptions:
+              type: spc_t
+            allowPrivilegeEscalation: true
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 888
+            privileged: false
+            capabilities:
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+                - AUDIT_WRITE
+                - DAC_OVERRIDE
+              drop:
+                - ALL
+          # Set liveness probe to determine if the queue manager is running
+          livenessProbe:
+            exec:
+              command:
+              - chkmqhealthy
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 1
+          # Set readiness probe to determine if the MQ listener is running
+          readinessProbe:
+            exec:
+              command:
+              - chkmqready
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+              
+            requests:
+              cpu: 500m
+              memory: 512Mi
+              
+      initContainers:
+        - name: qmgr-init
+          image: IMAGE
+          imagePullPolicy: IfNotPresent
+          terminationMessagePath: "/run/termination-log"
+          command: ["runmqserver"]
+          args: ["-i"]
+          env:
+          - name: LICENSE
+            value: accept
+          - name: MQ_QMGR_NAME
+            value: BSM
+          - name: MQ_MULTI_INSTANCE
+            value: "true"
+          - name: LOG_FORMAT
+            value: basic
+          - name: DEBUG
+            value: "false"
+          volumeMounts:
+          - mountPath: "/mnt/mqm"
+            name: data
+          - mountPath: "/mnt/mqm-log"
+            name: mqtest-ibm-mq-log
+          - mountPath: "/mnt/mqm-data"
+            name: mqtest-ibm-mq-qm
+          securityContext:
+            seLinuxOptions:
+              type: spc_t
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+            runAsUser: 0
+            privileged: false
+            capabilities:
+              add:
+                - CHOWN
+                - FOWNER
+                - DAC_OVERRIDE
+              drop:
+                - ALL
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels:
+        app: "ibm-mq"
+        chart: "ibm-mqadvanced-server-dev"
+        heritage: "Tiller"
+        release: "mqtest"        
+    spec:
+      # If present, use the storageClassName from the values.yaml, else use the
+      # default storageClass setup by Kubernetes Administrator
+      #
+      # Setting storageClassName to nil means use the default storage class
+      storageClassName: 
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "2Gi"
+
+---
+# Source: ibm-mqadvanced-server-dev/templates/tests/test-metrics.yaml
+# © Copyright IBM Corporation 2018, 2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This test tries to open port 9157 every second.  It keeps trying until it works,
+# or `livenessProbe.initialDelaySeconds` have passed.
+
+---
+# Source: ibm-mqadvanced-server-dev/templates/tests/test.yaml
+# © Copyright IBM Corporation 2017, 2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This test tries to open port 1414 every second.  It keeps trying until it works,
+# or `livenessProbe.initialDelaySeconds` have passed.
+
