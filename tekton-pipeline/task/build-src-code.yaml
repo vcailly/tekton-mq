@@ -27,13 +27,14 @@ spec:
       args:
         - /workspace/git-source/${inputs.params.pathToContext}
     - name: build-and-push
-      image: gcr.io/kaniko-project/executor:v0.16.0
+      image: gcr.io/kaniko-project/executor:debug-v0.16.0
       command:
         - /kaniko/executor
       args:
         - --dockerfile=${inputs.params.pathToDockerfile}
         - --destination=${inputs.params.imageUrl}:${inputs.params.imageTag}
         - --context=/workspace/git-source/${inputs.params.pathToContext}
+        - --verbosity=debug
       securityContext:
         runAsUser: 0
 
