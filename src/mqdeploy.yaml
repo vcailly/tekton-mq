@@ -21,6 +21,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mqtest-ibm-mq-log
+  namespace: demo
   labels:
     app: "ibm-mq"
     chart: "ibm-mqadvanced-server-dev"
@@ -61,6 +62,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mqtest-ibm-mq-qm
+  namespace: demo
   labels:
     app: "ibm-mq"
     chart: "ibm-mqadvanced-server-dev"
@@ -98,6 +100,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: demo
   annotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: '9157'
@@ -136,6 +139,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: demo
   name: mqtest-ibm-mq
   labels:
     app: "ibm-mq"
@@ -180,6 +184,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mqtest-ibm-mq
+  namespace: demo
   labels:
     app: "ibm-mq"
     chart: "ibm-mqadvanced-server-dev"
