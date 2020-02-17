@@ -21,6 +21,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mqtest-ibm-mq-log
+  namespace: demo
   labels:
     app: "ibm-mq"
     chart: "ibm-mqadvanced-server-dev"
@@ -61,6 +62,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mqtest-ibm-mq-qm
+  namespace: demo
   labels:
     app: "ibm-mq"
     chart: "ibm-mqadvanced-server-dev"
@@ -98,12 +100,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: demo
   annotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: '9157'
   name: mqtest-ibm-mq-metrics
   labels:
-    app: "ibm-mq"
+    app: "ibm-mq"h
     chart: "ibm-mqadvanced-server-dev"
     heritage: "Tiller"
     release: "mqtest"    
@@ -136,6 +139,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: demo
   name: mqtest-ibm-mq
   labels:
     app: "ibm-mq"
@@ -180,6 +184,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mqtest-ibm-mq
+  namespace: demo
   labels:
     app: "ibm-mq"
     chart: "ibm-mqadvanced-server-dev"
@@ -254,7 +259,7 @@ spec:
                 - "mqtest-ibm-mq"
             topologyKey: "kubernetes.io/hostname"
       imagePullSecrets:
-        - name: private-registry-secret
+        - name: ibm-cr-secret
       serviceAccountName: default
       hostNetwork: false
       hostPID: false
@@ -271,8 +276,8 @@ spec:
           claimName: mqtest-ibm-mq-qm
       containers:
         - name: qmgr
-          image: "IMAGE"
-          imagePullPolicy: IfNotPresent
+          image: IMAGE
+          imagePullPolicy: Always
           terminationMessagePath: "/run/termination-log"
           ports:
           - containerPort: 1414
@@ -282,7 +287,7 @@ spec:
           - name: LICENSE
             value: accept
           - name: MQ_QMGR_NAME
-            value: QM1
+            value: BSM
           - name: MQ_MULTI_INSTANCE
             value: "true"
           - name: LOG_FORMAT
@@ -351,7 +356,7 @@ spec:
               
       initContainers:
         - name: qmgr-init
-          image: "IMAGE"
+          image: IMAGE
           imagePullPolicy: IfNotPresent
           terminationMessagePath: "/run/termination-log"
           command: ["runmqserver"]
@@ -360,7 +365,7 @@ spec:
           - name: LICENSE
             value: accept
           - name: MQ_QMGR_NAME
-            value: QM1
+            value: BSM
           - name: MQ_MULTI_INSTANCE
             value: "true"
           - name: LOG_FORMAT
