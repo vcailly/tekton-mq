@@ -8,9 +8,9 @@ spec:
   imagePullSecrets:
   - name: ibm-cr-secret
   volumes:
-  - name: data
-    persistentVolumeClaim:
-      claimName: data-mqtest-ibm-mq-0
+#  - name: data
+#    persistentVolumeClaim:
+#      claimName: data-mqtest-ibm-mq-0
   - name: mqtest-ibm-mq-log
     persistentVolumeClaim:
       claimName: mqtest-ibm-mq-log
@@ -24,8 +24,8 @@ spec:
   - name: mq-bkup-ctr
     image: vcailly/k8s-kubectl:1.0
     volumeMounts:
-    - mountPath: "/mnt/mqm"
-      name: data
+#    - mountPath: "/mnt/mqm"
+#      name: data
     - mountPath: "/mnt/mqm-log"
       name: mqtest-ibm-mq-log
     - mountPath: "/mnt/mqm-data"
@@ -35,7 +35,7 @@ spec:
     imagePullPolicy: Always
     env:
     - name: MQ_QMGR_NAME
-      value: BSM
+      value: QM1
     resources:
       limits:
         memory: "200Mi"
