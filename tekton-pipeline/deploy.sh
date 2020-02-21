@@ -1,14 +1,16 @@
 #!/bin/bash
 tput reset
 
-oc delete pvc -n demo data-mqtest-ibm-mq-0 data-mqtest-ibm-mq-1 mqtest-ibm-mq-log mqtest-ibm-mq-qm
-#oc delete svc -n demo mqtest-ibm-mq mqtest-ibm-mq-metrics
-oc delete sts -n demo mqtest-ibm-mq
-
 kubectl patch pvc mqtest-ibm-mq-log -n demo -p '{"metadata":{"finalizers": []}}' --type=merge
 kubectl patch pvc mqtest-ibm-mq-qm -n demo -p '{"metadata":{"finalizers": []}}' --type=merge
 kubectl patch pvc data-mqtest-ibm-mq-0 -n demo -p '{"metadata":{"finalizers": []}}' --type=merge
 kubectl patch pvc data-mqtest-ibm-mq-1 -n demo -p '{"metadata":{"finalizers": []}}' --type=merge
+
+
+oc delete pvc -n demo data-mqtest-ibm-mq-0 data-mqtest-ibm-mq-1 mqtest-ibm-mq-log mqtest-ibm-mq-qm
+#oc delete svc -n demo mqtest-ibm-mq mqtest-ibm-mq-metrics
+oc delete sts -n demo mqtest-ibm-mq
+
 
 
 ibmcloud cr image-rm de.icr.io/vcailly/builtmq:9.1.3
