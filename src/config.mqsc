@@ -51,11 +51,11 @@ SET AUTHREC +
    GROUP('cn=admin,ou=groups,dc=example,dc=org') +
    OBJTYPE(QUEUE) +
    AUTHADD(CRT)
-SET AUTHREC +
-   PROFILE('@class') +
-   PRINCIPAL('cn=app,ou=users,dc=example,dc=org') +
-   OBJTYPE(QUEUE) +
-   AUTHADD(NONE)
+* SET AUTHREC +
+*    PROFILE('@class') +
+*    PRINCIPAL('cn=app,ou=users,dc=example,dc=org') +
+*    OBJTYPE(QUEUE) +
+*    AUTHADD(NONE)
 SET AUTHREC +
    PROFILE('@class') +
    GROUP('cn=mqclient,ou=groups,dc=example,dc=org') +
@@ -141,9 +141,14 @@ SET AUTHREC +
    GROUP('cn=admin,ou=groups,dc=example,dc=org') +
    OBJTYPE(SERVICE) +
    AUTHADD(CHG,DLT,DSP,CTRL)
+* SET AUTHREC +
+*    PROFILE('DEV.QUEUE.*') +
+*    PRINDIPAL('cn=app,ou=users,dc=example,dc=org') +
+*    OBJTYPE(QUEUE) +
+*    AUTHADD(BROWSE,GET,INQ,PUT,PASSALL,PASSID,SET,SETALL,SETID)
 SET AUTHREC +
    PROFILE('DEV.QUEUE.*') +
-   PRINCIPAL('cn=app,ou=users,dc=example,dc=org') +
+   GROUP('cn=mqclient,ou=users,dc=example,dc=org') +
    OBJTYPE(QUEUE) +
    AUTHADD(BROWSE,GET,INQ,PUT,PASSALL,PASSID,SET,SETALL,SETID)
 SET AUTHREC +
