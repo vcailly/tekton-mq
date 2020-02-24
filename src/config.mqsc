@@ -1,0 +1,23 @@
+DEFINE AUTHINFO('USE.LDAP') +
+  AUTHTYPE(IDPWLDAP) +
+  ADOPTCTX(YES) +
+  CONNAME('ldap-service-demo.bibcluster-21cfe565fa294c2a42c6449b6a7486c1-0001.eu-de.containers.appdomain.cloud(31430)') +
+  CHCKCLNT(OPTIONAL) +
+  CHCKLOCL(OPTIONAL) +
+  CLASSGRP('groupOfNames') +
+  CLASSUSR('inetOrgPerson') +
+  BASEDNG('ou=groups,dc=example,dc=org') +
+  BASEDNU('ou=users,dc=example,dc=org') +
+  FINDGRP('member') +
+  LDAPUSER('cn=admin,ou=users,dc=example,dc=org') +
+  LDAPPWD('unixunix') +
+  SHORTUSR('cn') +
+  GRPFIELD('cn') +
+  USRFIELD('cn') +
+  AUTHORMD(SEARCHGRP) +
+  REPLACE
+
+ALTER QMGR CONNAUTH(USE.LDAP)
+
+REFRESH SECURITY
+
