@@ -277,7 +277,7 @@ spec:
       containers:
         - name: qmgr
           image: "IMAGE"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           terminationMessagePath: "/run/termination-log"
           ports:
           - containerPort: 1414
@@ -357,7 +357,7 @@ spec:
       initContainers:
         - name: qmgr-init
           image: "IMAGE"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           terminationMessagePath: "/run/termination-log"
           command: ["runmqserver"]
           args: ["-i"]
