@@ -17,6 +17,164 @@ DEFINE AUTHINFO('USE.LDAP') +
   AUTHORMD(SEARCHGRP) +
   REPLACE
 
+SET AUTHREC +
+   PROFILE('SYSTEM.ADMIN.COMMAND.QUEUE') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(DSP,INQ,PUT)
+SET AUTHREC +
+   PROFILE('SYSTEM.MQEXPLORER.REPLY.MODEL') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(DSP,GET,INQ)
+SET AUTHREC +
+   PROFILE('self') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QMGR) +
+   AUTHADD(ALTUSR,CHG,CONNECT,DLT,DSP,INQ,SET,SETALL,SETID,CTRL,SYSTEM)
+SET AUTHREC +
+   PROFILE('self') +
+   GROUP('cn=mqclient,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QMGR) +
+   AUTHADD(CONNECT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(CLNTCONN) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   PRINCIPAL('cn=app,ou=users,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(NONE)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=mqclient,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(NONE)
+SET AUTHREC +
+   PROFILE('@class') +
+   PRINCIPAL('cn=admin,ou=users,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(NONE)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(NAMELIST) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(PROCESS) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QMGR) +
+   AUTHADD(NONE)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=mqclient,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QMGR) +
+   AUTHADD(NONE)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(CHANNEL) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(AUTHINFO) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(TOPIC) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(COMMINFO) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(LISTENER) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('@class') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(SERVICE) +
+   AUTHADD(CRT)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(AUTHINFO) +
+   AUTHADD(CHG,DLT,DSP)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(TOPIC) +
+   AUTHADD(CHG,CLR,DLT,DSP,CTRL)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(COMMINFO) +
+   AUTHADD(CHG,DLT,DSP)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(LISTENER) +
+   AUTHADD(CHG,DLT,DSP,CTRL)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(SERVICE) +
+   AUTHADD(CHG,DLT,DSP,CTRL)
+SET AUTHREC +
+   PROFILE('DEV.QUEUE.*') +
+   PRINCIPAL('cn=app,ou=users,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(BROWSE,GET,INQ,PUT,PASSALL,PASSID,SET,SETALL,SETID)
+SET AUTHREC +
+   PROFILE('DEV.QUEUE.*') +
+   GROUP('cn=mqclient,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(BROWSE,GET,PUT)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(CLNTCONN) +
+   AUTHADD(CHG,DLT,DSP)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(QUEUE) +
+   AUTHADD(BROWSE,CHG,CLR,DLT,DSP)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(NAMELIST) +
+   AUTHADD(CHG,DLT,DSP)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(PROCESS) +
+   AUTHADD(CHG,DLT,DSP)
+SET AUTHREC +
+   PROFILE('**') +
+   GROUP('cn=admin,ou=groups,dc=example,dc=org') +
+   OBJTYPE(CHANNEL) +
+   AUTHADD(CHG,DLT,DSP,CTRL,CTRLX)
+
+
+
 ALTER QMGR CONNAUTH(USE.LDAP)
 
 REFRESH SECURITY

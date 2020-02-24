@@ -85,8 +85,8 @@ setmqaut -m $qmgr -t qmgr -g "$group" -all
 setmqaut -m $qmgr -t qmgr -g "$group" +chg +dlt +dsp +ctrl +setall +setid +altusr +connect +inq +set +system
 setmqaut -m $qmgr -t qmgr -g "$group" +connect 
 
-setmqaut -m $qmgr- t qmgr  -g "mqclient" +connect
-setmqaut -m $qmgr -t queue -g "mqclient"  -n DEV.QUEUE.* +browse +get +put +connect
+setmqaut -m $qmgr -t qmgr  -g "mqclient" +connect
+setmqaut -m $qmgr -t qmgr  -g "mqclient" -n DEV.QUEUE.* +browse +get +put
 setmqaut -m $qmgr -t queue -p "app"  -n DEV.QUEUE.* +browse +get +put +allmqi
 
 
