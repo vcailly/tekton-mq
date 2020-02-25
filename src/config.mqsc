@@ -148,7 +148,7 @@ SET AUTHREC +
 *    AUTHADD(BROWSE,GET,INQ,PUT,PASSALL,PASSID,SET,SETALL,SETID)
 SET AUTHREC +
    PROFILE('DEV.QUEUE.*') +
-   GROUP('cn=mqclient,ou=users,dc=example,dc=org') +
+   GROUP('cn=mqclient,ou=groups,dc=example,dc=org') +
    OBJTYPE(QUEUE) +
    AUTHADD(BROWSE,GET,INQ,PUT,PASSALL,PASSID,SET,SETALL,SETID)
 SET AUTHREC +
