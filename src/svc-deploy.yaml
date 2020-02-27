@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: demo
+  name: mqtest1-bm-mq
+  labels:
+    app: "ibm-mq"
+    chart: "ibm-mqadvanced-server-dev"
+    heritage: "Tiller"
+    release: "mqtest"    
+spec:
+  type: ClusterIP
+  ports:
+  - port: 1414
+    name: tcp-qmgr
+  selector:
+    app: "ibm-mq"
+    release: "mqtest" 
+
+
