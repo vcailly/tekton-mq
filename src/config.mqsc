@@ -181,6 +181,6 @@ SET AUTHREC +
    GROUP('cn=admin,ou=groups,dc=example,dc=org') +
    OBJTYPE(CHANNEL) +
    AUTHADD(CHG,DLT,DSP,CTRL,CTRLX)
-
+ALTER QMGR SSLKEYR('/mnt/mqm-data/qmgrs/QM1/ssl/QM1')
 REFRESH SECURITY
 
