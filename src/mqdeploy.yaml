@@ -296,6 +296,8 @@ spec:
             value: "true"
           - name: DEBUG
             value: "false"
+          - name: MQ_DEV 
+            value: "false"
           - name: MQ_EPHEMERAL_PREFIX
             value: "/run/mqm"
           - name: MQ_ADMIN_PASSWORD
@@ -371,6 +373,8 @@ spec:
           - name: LOG_FORMAT
             value: basic
           - name: DEBUG
+            value: "false"
+          - name: MQ_DEV 
             value: "false"
           volumeMounts:
           - mountPath: "/mnt/mqm"
