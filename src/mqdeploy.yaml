@@ -265,7 +265,7 @@ spec:
       hostPID: false
       hostIPC: false
       securityContext:
-        fsGroup: 888
+        fsGroup: 10888
         supplementalGroups:
       volumes:
       - name: mqtest-ibm-mq-log
@@ -318,7 +318,7 @@ spec:
             allowPrivilegeEscalation: true
             readOnlyRootFilesystem: false
             runAsNonRoot: true
-            runAsUser: 888
+            runAsUser: 10888
             privileged: false
             capabilities:
               add:

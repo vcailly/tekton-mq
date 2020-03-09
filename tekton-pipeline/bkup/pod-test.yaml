@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: sre
+spec:
+  serviceAccountName: default
+  imagePullSecrets:
+  - name: ibm-cr-secret
+  volumes:
+  - name: mqtest-ibm-mq-log
+    persistentVolumeClaim:
+      claimName: mqtest-ibm-mq-log
+  containers:
+  - name: test-pod
+    image: busybox
+    volumeMounts:
+    - mountPath: "/test"
+      name: mqtest-ibm-mq-log
+    imagePullPolicy: Always
+    command: ["sleep"]
+    args: ["3600"]
+
