@@ -388,8 +388,8 @@ spec:
               type: spc_t
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
-            runAsNonRoot: false
-            runAsUser: 0
+            runAsNonRoot: true
+            runAsUser: 888
             privileged: false
             capabilities:
               add:

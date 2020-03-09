@@ -29,9 +29,6 @@ seLinuxContext:
 supplementalGroups:
   type: MustRunAs
 supplementalGroups:
-  ranges:
-  - max: 65535
-    min: 1
   type: MustRunAs
 volumes:
 - secret
