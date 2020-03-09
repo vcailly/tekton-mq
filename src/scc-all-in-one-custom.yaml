@@ -18,16 +18,16 @@ allowedCapabilities:
 allowedFlexVolumes: []
 defaultAddCapabilities: []
 fsGroup:
-  type: RunAsAny
+  type: MustRunAs
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
 - MKNOD
 runAsUser:
   type: MustRunAsNonRoot
 seLinuxContext:
-  type: RunAsAny
+  type: MustRunAs
 supplementalGroups:
-  type: RunAsAny
+  type: MustRunAs
 volumes:
 - secret
 - persistentVolumeClaim
