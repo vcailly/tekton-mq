@@ -23,7 +23,7 @@ readOnlyRootFilesystem: false
 requiredDropCapabilities:
 - MKNOD
 runAsUser:
-  type: RunAsAny
+  type: MustRunAsNonRoot
 seLinuxContext:
   type: RunAsAny
 supplementalGroups:
