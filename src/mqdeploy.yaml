@@ -297,7 +297,7 @@ spec:
           - name: DEBUG
             value: "false"
           - name: MQ_DEV 
-            value: "false"
+            value: "true"
           - name: MQ_EPHEMERAL_PREFIX
             value: "/run/mqm"
           - name: MQ_ADMIN_PASSWORD
