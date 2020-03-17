@@ -41,6 +41,6 @@ spec:
         memory: "200Mi"
       requests:
         memory: "100Mi"
-    command: ["sleep"]
-    args: ["3600"]
+    command: ["sh"]
+    args: ["/upgrade-mq.sh"]
 

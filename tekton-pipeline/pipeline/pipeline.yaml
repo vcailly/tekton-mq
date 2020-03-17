@@ -32,4 +32,21 @@ spec:
       inputs:
         - name: git-source
           resource: git-source
-
+  - name: deploy-application
+    taskRef:
+      name: deploy-application
+    runAfter:
+      - build-image-from-source
+    params:
+      - name: pathToContext
+        value: "${params.pathToContext}"
+      - name: pathToYamlFile
+        value: "${params.pathToYamlFile}"
+      - name: imageUrl
+        value: "${params.imageUrl}"
+      - name: imageTag
+        value: "${params.imageTag}"
+    resources:
+      inputs:
+        - name: git-source
+          resource: git-source
