@@ -53,6 +53,7 @@ echo ""
 echo "Patch statefullset with new MQ image version "
 echo "---------------------------------------------"
 kubectl patch sts  ${sts} -n ${nspace} --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"de.icr.io/vcailly/bsmmq:9.1.4.0-r1"}]'
+kubectl patch sts  ${sts} -n ${nspace} --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/initContainers/0/image", "value":"de.icr.io/vcailly/bsmmq:9.1.4.0-r1"}]'
 
 echo ''
 echo "Patch statefullset with new MQ image version : done"
